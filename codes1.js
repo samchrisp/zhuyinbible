@@ -164,7 +164,7 @@ function readchapter(opstr, bnum, cnum) {
 
   out2 = document.createElement("DIV");
   out2.style.color = "black";
-  out2.style.fontSize = "24";
+  out2.style.fontSize = "50";
   out2.style.textAlign = "left";
   out1.appendChild(out2);
   out_OL = document.createElement("OL");
