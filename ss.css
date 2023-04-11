@@ -1,0 +1,43 @@
+@font-face{
+
+font-family:'HanWangMing';
+src: url(//samchrisp.github.io/zhuyinbible/hanwangming.eot),
+/* IE6-IE8 */ url(//samchrisp.github.io/zhuyinbible/hanwangming.woff2),
+/* Super Modern Browsers */ url(//samchrisp.github.io/zhuyinbible/hanwangming.woff),
+/* Pretty Modern Browsers */ url(//samchrisp.github.io/zhuyinbible/hanwangming.ttf);
+  
+} 
+
+.bpmf { font-family: 'HanWangMing'; font-size: 2em; }
+
+body {
+  font-size: 24px; /*¦r«¬¤j¤p */
+  margin-left: 10px;
+  font-family: 'HanWangMing'; 
+  font-size: 2em;  
+}
+ul {
+  margin-left: 0em;
+  padding-left: 0px;
+  border-left: 0px;
+  text-indent: 0px;
+}
+li{
+  line-height: 120%;
+  margin:3mm;
+}
+.nothing1 { 
+  color: #FF0000; 
+  font-family:arial; 
+  font-size: 24px; 
+}
+.test { 
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}
+
+div.hidden { display: none; !important }
+
+#controls { text-align: center; }
+#controls, #controls select, #controls input { font-size: 1em; }

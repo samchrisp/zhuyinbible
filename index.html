@@ -1,33 +1,452 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-<head>
-	<title>Zhuyin Bible</title>
-	<style type="text/css">
-		
-@font-face{
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script language="JavaScript" type="text/javascript" src="bible.js"></script>
+    <script language="JavaScript" type="text/javascript" src="location1.js"></script>
+    <script language="JavaScript" type="text/javascript" src="b2.js"></script>
+    <script language="JavaScript" type="text/javascript" src="codes1.js"></script>
+    <script language="JavaScript" type="text/javascript">
+<!--
 
-font-family:'HanWangMing';
-src: url(//samchrisp.github.io/zhuyinbible/hanwangming.eot),
-/* IE6-IE8 */ url(//samchrisp.github.io/zhuyinbible/hanwangming.woff2),
-/* Super Modern Browsers */ url(//samchrisp.github.io/zhuyinbible/hanwangming.woff),
-/* Pretty Modern Browsers */ url(//samchrisp.github.io/zhuyinbible/hanwangming.ttf);
+function setachap() {
+var bnum, cnum, hh;
+  setchap(document.Reading, document.Reading.na.selectedIndex, document.Reading.chap.selectedIndex);
+
+  ua = navigator.userAgent.toLowerCase();
+  hh = location.hash;
+  if(location.hash.length > 1) {
+//  if((ua.indexOf("firefox") != -1) && (location.hash.length > 1)) {
+    bnum = hh.substring(1, hh.indexOf("_"));
+    cnum = hh;
+    while (cnum.indexOf("_") != -1)
+        cnum = cnum.substring(cnum.indexOf("_")+1);
+    bnum = Number(bnum);
+    cnum = Number(cnum);
+    readchapter(' ', bnum, cnum);
+    setchap(Reading, bnum, cnum);
+  }
+  speed01();
+
+}
+
+
+function setchap(f, index, s1) {
+        var i,j,k,txt;
+	var cnum=new Array(50,40,27,36,34,24,21,4,31,24,22,25,29,36,10,13,10,42,150,31,12,8,66,52,5,48,12,14,3,9,1,4,7,3,3,3,2,14,4, 28,16,24,21,28,16,16,13,6,6,4,4,5,3,6,4,3,1,13,5,5,3,5,1,1,1,22);
+	i=cnum[index];
+	var currentchapters = f.chap.options.length;
 	
-} 
+	if((i == 150) && (currentchapters < 150))
+	  for(j = 1; j <= 150;j++) {
+	    txt = "第 " + j + " 篇";
+	    f.chap.options[j-1] = new Option(txt, j);	
+	  }
+	else if((i < 150) && (currentchapters == 150)) {
+	  for(j = 1; j <= i; j++) {
+	    txt = "第 " + j + " 章";
+	    f.chap.options[j-1] = new Option(txt, j);
+	  }
+	  for(j = 150;j > i;j--)
+	    f.chap.options[j-1] = null;
+	}
+	else if (i > currentchapters)
+	  for(j = currentchapters; j <= i; j++) {
+	    txt = "第 " + j + " 章";
+	    f.chap.options[j-1] = new Option(txt, j);
+	  }
+	else if (i < currentchapters)
+	  for(j = currentchapters; j > i; j--)
+	    f.chap.options[j-1] = null;
 
-#text, .bpmf { font-family: 'HanWangMing'; font-size: 2em; }
-	</style>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-</head>
-<body>
+	
+	f.chap.options[0].selected = s1;
+	process_percentage();
+}
+function setc(f, index, s1) {
+	setchap(f, index, s1);
+	readchapter(' ', document.Reading.na.selectedIndex, document.Reading.chap.selectedIndex);
+}
+function changeB1() {
+	var bb = document.getElementById("begin1").selectedIndex;
+	var ee = document.getElementById("end1").selectedIndex;
+	if(bb > ee) {
+		document.getElementById("end1").selectedIndex = bb;
+	}
+}
 
-	<div id="text" class="bpmf">
-	1 不從惡人的計謀，不站罪人的道路，不坐褻慢人的座位，<br/>
-	2 唯喜愛耶和華的律法，晝夜思想，這人便為有福！<br />
-	3 他要像一棵樹，栽在溪水旁，按時候結果子，葉子也不枯乾，凡他所做的，盡都順利。<br />
-	4 惡人並不是這樣，乃像糠秕，被風吹散。 <br />
-	5 因此當審判的時候，惡人必站立不住，罪人在義人的會中也是如此。 <br />
-	6 因為耶和華知道義人的道路，惡人的道路卻必滅亡。<br />
-	</div>
+function changeE1() {
+	var bb = document.getElementById("begin1").selectedIndex;
+	var ee = document.getElementById("end1").selectedIndex;
+	if(bb > ee) {
+		document.getElementById("begin1").selectedIndex = ee;
+	}
+}
 
-</body>
+//-->
+</script><title>閱讀經文</title>
+    <link rel="stylesheet" title="Modern" href="ss.css" type="text/css"
+      media="screen">
+  </head>
+  <body id="mybody" onload="setachap()" alink="#ffffff"
+    link="#00aa33" text="#000050" vlink="#0033aa">
+    <a name="top"></a>
+  <div id="controls">
+            <div id="link2">
+              <a href="" onclick="readchapter(' ', nowbook,--nowchapter); return false;">前一章</a><br>
+              <a href="" onclick="readchapter(' ', nowbook,++nowchapter); return false;">後一章</a>
+            </div>
+            <form method="post" name="Reading" onsubmit="readchapter(' ', document.Reading.na.selectedIndex, document.Reading.chap.selectedIndex); return false;"
+              action="">
+              <select name="na" id="book1" onchange="setc(Reading, this.selectedIndex, 1)">
+                <option value="0" selected="selected">創世記 </option>
+                <option value="1">出埃及記 </option>
+                <option value="2">利未記 </option>
+                <option value="3">民數記 </option>
+                <option value="4">申命記 </option>
+                <option value="5">約書亞記 </option>
+                <option value="6">士師記 </option>
+                <option value="7">路得記 </option>
+                <option value="8">撒母耳記上 </option>
+                <option value="9">撒母耳記下 </option>
+                <option value="10">列王紀上 </option>
+                <option value="11">列王紀下 </option>
+                <option value="12">歷代志上 </option>
+                <option value="13">歷代志下 </option>
+                <option value="14">以斯拉記 </option>
+                <option value="15">尼希米記 </option>
+                <option value="16">以斯帖記 </option>
+                <option value="17">約伯記 </option>
+                <option value="18">詩篇 </option>
+                <option value="19">箴言 </option>
+                <option value="20">傳道書 </option>
+                <option value="21">雅歌 </option>
+                <option value="22">以賽亞書 </option>
+                <option value="23">耶利米書 </option>
+                <option value="24">耶利米哀歌 </option>
+                <option value="25">以西結書 </option>
+                <option value="26">但以理書 </option>
+                <option value="27">何西阿書 </option>
+                <option value="28">約珥書 </option>
+                <option value="29">阿摩司書 </option>
+                <option value="30">俄巴底亞書 </option>
+                <option value="31">約拿書 </option>
+                <option value="32">彌迦書 </option>
+                <option value="33">那鴻書 </option>
+                <option value="34">哈巴谷書 </option>
+                <option value="35">西番雅書 </option>
+                <option value="36">哈該書 </option>
+                <option value="37">撒迦利亞書 </option>
+                <option value="38">瑪拉基書 </option>
+                <option value="39">馬太福音傳 </option>
+                <option value="40">馬可福音傳 </option>
+                <option value="41">路加福音傳 </option>
+                <option value="42">約翰福音傳 </option>
+                <option value="43">使徒行傳 </option>
+                <option value="44">羅馬人書 </option>
+                <option value="45">哥林多人書前書 </option>
+                <option value="46">哥林多人書後書 </option>
+                <option value="47">加拉太人書 </option>
+                <option value="48">以弗所人書 </option>
+                <option value="49">腓利比人書 </option>
+                <option value="50">歌羅西人書 </option>
+                <option value="51">帖撒羅尼迦人書前書 </option>
+                <option value="52">帖撒羅尼迦人書後書 </option>
+                <option value="53">保羅寄互提摩太的批前書 </option>
+                <option value="54">保羅寄互提摩太的批後書 </option>
+                <option value="55">保羅寄互提多的批 </option>
+                <option value="56">保羅寄互腓利門的批 </option>
+                <option value="57">希伯來書 </option>
+                <option value="58">雅各書 </option>
+                <option value="59">彼得的批前書 </option>
+                <option value="60">彼得的批後書 </option>
+                <option value="61">約翰的批第壹書 </option>
+                <option value="62">約翰的批第貳書 </option>
+                <option value="63">約翰的批第參書 </option>
+                <option value="64">猶大的批 </option>
+                <option value="65">啟示錄
+                </option>
+              </select>
+              <select name="chap" id="chapter1" onchange="readchapter(' ', document.Reading.na.selectedIndex, document.Reading.chap.selectedIndex); return false;">
+                <option value="001" selected="selected">第 1 章
+                </option>
+                <option value="002">第 2 章
+                </option>
+                <option value="003">第 3 章
+                </option>
+                <option value="004">第 4 章
+                </option>
+                <option value="005">第 5 章
+                </option>
+                <option value="006">第 6 章
+                </option>
+                <option value="007">第 7 章
+                </option>
+                <option value="008">第 8 章
+                </option>
+                <option value="009">第 9 章
+                </option>
+                <option value="010">第 10 章
+                </option>
+                <option value="011">第 11 章
+                </option>
+                <option value="012">第 12 章
+                </option>
+                <option value="013">第 13 章
+                </option>
+                <option value="014">第 14 章
+                </option>
+                <option value="015">第 15 章
+                </option>
+                <option value="016">第 16 章
+                </option>
+                <option value="017">第 17 章
+                </option>
+                <option value="018">第 18 章
+                </option>
+                <option value="019">第 19 章
+                </option>
+                <option value="020">第 20 章
+                </option>
+                <option value="021">第 21 章
+                </option>
+                <option value="022">第 22 章
+                </option>
+                <option value="023">第 23 章
+                </option>
+                <option value="024">第 24 章
+                </option>
+                <option value="025">第 25 章
+                </option>
+                <option value="026">第 26 章
+                </option>
+                <option value="027">第 27 章
+                </option>
+                <option value="028">第 28 章
+                </option>
+                <option value="029">第 29 章
+                </option>
+                <option value="030">第 30 章
+                </option>
+                <option value="031">第 31 章
+                </option>
+                <option value="032">第 32 章
+                </option>
+                <option value="033">第 33 章
+                </option>
+                <option value="034">第 34 章
+                </option>
+                <option value="035">第 35 章
+                </option>
+                <option value="036">第 36 章
+                </option>
+                <option value="037">第 37 章
+                </option>
+                <option value="038">第 38 章
+                </option>
+                <option value="039">第 39 章
+                </option>
+                <option value="040">第 40 章
+                </option>
+                <option value="041">第 41 章
+                </option>
+                <option value="042">第 42 章
+                </option>
+                <option value="043">第 43 章
+                </option>
+                <option value="044">第 44 章
+                </option>
+                <option value="045">第 45 章
+                </option>
+                <option value="046">第 46 章
+                </option>
+                <option value="047">第 47 章
+                </option>
+                <option value="048">第 48 章
+                </option>
+                <option value="049">第 49 章
+                </option>
+                <option value="050">第 50 章
+                </option>
+              </select>
+              <br>
+              <div class="hidden"><input id="auto1" name="play1" type="radio">是
+              <input id="auto2" name="play1" checked="checked" type="radio">否</div>
+              <input name="submit1" value="閱讀" type="submit">
+            </form>
+    </div>
+
+    <div id="nothing">
+    </div>
+
+<div class="hidden">
+開始日期：<input type="text" id="start1" name="start1" onchange="changeS()" size="8" />
+天數：<input type="text" id="duration" name="duration" onchange="changeD()" size="3" />
+完成日期：<input type="text" id="finish1" name="finish1" onchange="changeF()" size="8" />
+章數：<input type="text" id="Chinese-everyday" name="everyday1" onchange="everyday()" size="2" value="5" />
+播放速度：<input type="text" id="speed" name="speed" onchange="speed01()" size="3" value="1.0" />
+              <select name="begin2" id='begin2' onchange="changeB()" >
+                <option value="0" selected="selected">創世記 </option>
+                <option value="1">出埃及記 </option>
+                <option value="2">利未記 </option>
+                <option value="3">民數記 </option>
+                <option value="4">申命記 </option>
+                <option value="5">約書亞記 </option>
+                <option value="6">士師記 </option>
+                <option value="7">路得記 </option>
+                <option value="8">撒母耳記上 </option>
+                <option value="9">撒母耳記下 </option>
+                <option value="10">列王紀上 </option>
+                <option value="11">列王紀下 </option>
+                <option value="12">歷代志上 </option>
+                <option value="13">歷代志下 </option>
+                <option value="14">以斯拉記 </option>
+                <option value="15">尼希米記 </option>
+                <option value="16">以斯帖記 </option>
+                <option value="17">約伯記 </option>
+                <option value="18">詩篇 </option>
+                <option value="19">箴言 </option>
+                <option value="20">傳道書 </option>
+                <option value="21">雅歌 </option>
+                <option value="22">以賽亞書 </option>
+                <option value="23">耶利米書 </option>
+                <option value="24">耶利米哀歌 </option>
+                <option value="25">以西結書 </option>
+                <option value="26">但以理書 </option>
+                <option value="27">何西阿書 </option>
+                <option value="28">約珥書 </option>
+                <option value="29">阿摩司書 </option>
+                <option value="30">俄巴底亞書 </option>
+                <option value="31">約拿書 </option>
+                <option value="32">彌迦書 </option>
+                <option value="33">那鴻書 </option>
+                <option value="34">哈巴谷書 </option>
+                <option value="35">西番雅書 </option>
+                <option value="36">哈該書 </option>
+                <option value="37">撒迦利亞書 </option>
+                <option value="38">瑪拉基書 </option>
+                <option value="39">馬太福音 </option>
+                <option value="40">馬可福音 </option>
+                <option value="41">路加福音 </option>
+                <option value="42">約翰福音 </option>
+                <option value="43">使徒行傳 </option>
+                <option value="44">羅馬書 </option>
+                <option value="45">哥林多前書 </option>
+                <option value="46">哥林多後書 </option>
+                <option value="47">加拉太書 </option>
+                <option value="48">以弗所書 </option>
+                <option value="49">腓利比書 </option>
+                <option value="50">歌羅西書 </option>
+                <option value="51">帖撒羅尼迦前書 </option>
+                <option value="52">帖撒羅尼迦後書 </option>
+                <option value="53">提摩太前書 </option>
+                <option value="54">提摩太後書 </option>
+                <option value="55">提多書 </option>
+                <option value="56">腓利門書 </option>
+                <option value="57">希伯來書 </option>
+                <option value="58">雅各書 </option>
+                <option value="59">彼得前書 </option>
+                <option value="60">彼得後書 </option>
+                <option value="61">約翰壹書 </option>
+                <option value="62">約翰貳書 </option>
+                <option value="63">約翰參書 </option>
+                <option value="64">猶大書 </option>
+                <option value="65">啟示錄 </option>
+              </select>
+              到:
+              <select name="end2" id='end2'   onchange="changeE()">
+                <option value="0">創世記 </option>
+                <option value="1">出埃及記 </option>
+                <option value="2">利未記 </option>
+                <option value="3">民數記 </option>
+                <option value="4">申命記 </option>
+                <option value="5">約書亞記 </option>
+                <option value="6">士師記 </option>
+                <option value="7">路得記 </option>
+                <option value="8">撒母耳記上 </option>
+                <option value="9">撒母耳記下 </option>
+                <option value="10">列王紀上 </option>
+                <option value="11">列王紀下 </option>
+                <option value="12">歷代志上 </option>
+                <option value="13">歷代志下 </option>
+                <option value="14">以斯拉記 </option>
+                <option value="15">尼希米記 </option>
+                <option value="16">以斯帖記 </option>
+                <option value="17">約伯記 </option>
+                <option value="18">詩篇 </option>
+                <option value="19">箴言 </option>
+                <option value="20">傳道書 </option>
+                <option value="21">雅歌 </option>
+                <option value="22">以賽亞書 </option>
+                <option value="23">耶利米書 </option>
+                <option value="24">耶利米哀歌 </option>
+                <option value="25">以西結書 </option>
+                <option value="26">但以理書 </option>
+                <option value="27">何西阿書 </option>
+                <option value="28">約珥書 </option>
+                <option value="29">阿摩司書 </option>
+                <option value="30">俄巴底亞書 </option>
+                <option value="31">約拿書 </option>
+                <option value="32">彌迦書 </option>
+                <option value="33">那鴻書 </option>
+                <option value="34">哈巴谷書 </option>
+                <option value="35">西番雅書 </option>
+                <option value="36">哈該書 </option>
+                <option value="37">撒迦利亞書 </option>
+                <option value="38">瑪拉基書 </option>
+                <option value="39">馬太福音 </option>
+                <option value="40">馬可福音 </option>
+                <option value="41">路加福音 </option>
+                <option value="42">約翰福音 </option>
+                <option value="43">使徒行傳 </option>
+                <option value="44">羅馬書 </option>
+                <option value="45">哥林多前書 </option>
+                <option value="46">哥林多後書 </option>
+                <option value="47">加拉太書 </option>
+                <option value="48">以弗所書 </option>
+                <option value="49">腓利比書 </option>
+                <option value="50">歌羅西書 </option>
+                <option value="51">帖撒羅尼迦前書 </option>
+                <option value="52">帖撒羅尼迦後書 </option>
+                <option value="53">提摩太前書 </option>
+                <option value="54">提摩太後書 </option>
+                <option value="55">提多書 </option>
+                <option value="56">腓利門書 </option>
+                <option value="57">希伯來書 </option>
+                <option value="58">雅各書 </option>
+                <option value="59">彼得前書 </option>
+                <option value="60">彼得後書 </option>
+                <option value="61">約翰壹書 </option>
+                <option value="62">約翰貳書 </option>
+                <option value="63">約翰參書 </option>
+                <option value="64">猶大書 </option>
+                <option value="65" selected="selected">啟示錄 </option>
+              </select>
+有聲聖經位置：<input type="text" id="audio01" name="audio01" onchange="location01()" size="30" value="http://springbible.fhl.net/Bible2/Audio/" />
+
+
+<div id="percentage">
+    </div>
+
+    <div id="plan">
+    </div>
+      <div id="test" class="test">
+    </div>
+      <div id="test1" class="test1">
+    </div>
+</div>
+
+<style>
+.test { 
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}
+.test1 { 
+  position: fixed;
+  top: 20px;
+  left: 10px;
+}
+</style>
+  </body>
 </html>
