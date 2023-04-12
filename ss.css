@@ -15,6 +15,11 @@ body {
   font-family: 'HanWangMing'; 
   font-size: 2em;  
 }
+
+li{
+  line-height: 120%;
+}
+
 /*
 ul {
   margin-left: 0em;
