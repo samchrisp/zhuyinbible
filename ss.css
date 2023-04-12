@@ -19,6 +19,9 @@ body {
 li{
   line-height: 120%;
 }
+ul li{
+    list-style-type: decimal;
+}
 
 /*
 ul {
