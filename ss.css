@@ -11,11 +11,11 @@ src: url(//samchrisp.github.io/zhuyinbible/hanwangming.eot),
 .bpmf { font-family: 'HanWangMing'; font-size: 2em; }
 
 body {
-  font-size: 24px; /*¦r«¬¤j¤p */
-  margin-left: 10px;
+  font-size: 24px; /*Â¦rÂ«Â¬Â¤jÂ¤p */
   font-family: 'HanWangMing'; 
   font-size: 2em;  
 }
+/*
 ul {
   margin-left: 0em;
   padding-left: 0px;
@@ -35,7 +35,7 @@ li{
   position: fixed;
   bottom: 10px;
   right: 10px;
-}
+}*/
 
 div.hidden { display: none; !important }
 
