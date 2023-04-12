@@ -48,4 +48,4 @@ li{
 div.hidden { display: none; !important }
 
 #controls { text-align: center; }
-#controls, #controls select, #controls input { font-size: 1em; }
+#controls, #controls select, #controls input { font-size: 2em; }
